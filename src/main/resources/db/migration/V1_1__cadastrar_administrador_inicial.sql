@@ -1,0 +1,26 @@
+INSERT INTO `taskmanager`.`usuario`
+(`id`,
+`ativo`,
+`cpf_cnpj`,
+`email`,
+`nascimento`,
+`nome`,
+`senha`,
+`sobrenome`,
+`tipo_usuario`,
+`endereco_id`,
+`foto_documento`,
+`telefone_id`)
+VALUES
+(1,
+true,
+20175817049,
+"admin@email.com",
+null,
+"Danilo",
+"admin123",
+"Valerio",
+"ADMINISTRADOR",
+null,
+null,
+null);

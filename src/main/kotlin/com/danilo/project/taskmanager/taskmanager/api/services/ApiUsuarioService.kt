@@ -56,14 +56,30 @@ class ApiUsuarioService {
 
     }
 
-    fun update(idUsuario: Long, updatesUsuarioRequest: UpdatesUsuarioRequest): Usuario {
+    fun update(idUsuario: Long, updatesUsuarioRequest: UpdatesUsuarioRequest): UsuarioResponse {
 
         val userFound = usuarioById(idUsuario)
 
         userFound.nome = updatesUsuarioRequest.nome
         userFound.sobrenome = updatesUsuarioRequest.sobrenome
 
-        return repository.save(userFound)
+        return usuarioMapper.toResponse(repository.save(userFound))
+
+    }
+
+    fun activate(idUsuario: Long): String {
+
+        val userFound = usuarioById(idUsuario)
+        var response: UsuarioResponse? = null
+
+        if (userFound.ativo == false) {
+            userFound.ativo = true
+            response = usuarioMapper.toResponse(repository.save(userFound))
+        } else {
+            response = usuarioMapper.toResponse(userFound)
+        }
+
+        return messageSituationActivate(response)
 
     }
 
@@ -73,6 +89,13 @@ class ApiUsuarioService {
         repository.save(userFound)
 
         return "Usuário excluído com sucesso."
+    }
+
+    private fun messageSituationActivate(usuarioResponse: UsuarioResponse): String{
+       val msg = "O usuário ${usuarioResponse.nomeSobreNome} está ${if (usuarioResponse.ativo == true) "Ativo" else
+           "Desativado"}"
+
+        return msg
     }
 
 }

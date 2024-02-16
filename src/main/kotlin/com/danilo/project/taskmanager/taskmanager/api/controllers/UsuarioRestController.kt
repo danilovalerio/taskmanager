@@ -1,12 +1,14 @@
 package com.danilo.project.taskmanager.taskmanager.api.controllers
 
+import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuarioRequest
+import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.api.services.ApiUsuarioService
+import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -23,5 +25,31 @@ class UsuarioRestController {
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): UsuarioResponse {
         return  service.findById(id)
+    }
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    fun add(@RequestBody @Validated request: UsuarioRequest): Usuario {
+        return service.add(request)
+    }
+
+    @PutMapping("/{id}")
+    fun atualizarEmpresa(
+        @PathVariable id: Long,
+        @RequestBody @Validated request: UpdatesUsuarioRequest): UsuarioResponse {
+        return service.update(id, request)
+    }
+
+    @PutMapping("/{id}/ativar")
+    fun activate(
+        @PathVariable id: Long): String {
+        return service.activate(id)
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(
+        @PathVariable id: Long
+    ): String {
+        return service.deleteByInative(id)
     }
 }

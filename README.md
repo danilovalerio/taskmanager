@@ -7,5 +7,6 @@ prioridade e acompanhar o status das mesmas.
   linguagem robusta e amplamente utilizada oferece;
 - **Kotlin**: Para a programação da aplicação em geral;
 - **Gradle**: Para gereciar as dependências do projeto;
-- **Spring Boot 3**: Trabalharemos com a mais nova versão do Spring Boot, que maximiza a produtividade do desenvolvedor por meio de sua poderosa premissa de autoconfiguração;
+- **Spring Boot 3.2.2**: Trabalharemos com a mais nova versão do Spring Boot, que maximiza a produtividade do 
+  desenvolvedor por meio de sua poderosa premissa de autoconfiguração;
 - **Spring Data JPA**: Exploraremos como essa ferramenta pode simplificar nossa camada de acesso aos dados, facilitando a integração com bancos de dados SQL;

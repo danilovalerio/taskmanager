@@ -1,1 +1,14 @@
+server:
+  port: 8080
 spring:
+  datasource: #configuracao do banco
+    url: jdbc:mysql://localhost:3306/taskmanager #?useTimezone=true&serverTimezone=America/SaoPaulo
+    username: ${USER_DATABASE}
+    password: ${PASSWORD_DATABASE}
+  jpa:
+    open-in-view: false
+    hibernate:
+      #ddl-auto: none
+      ddl-auto: update
+      #ddl-auto: validate
+    show-sql: true

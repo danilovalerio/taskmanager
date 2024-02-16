@@ -3,6 +3,7 @@ package com.danilo.project.taskmanager.taskmanager.api.services
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
+import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiUsuarioMapper
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import com.danilo.project.taskmanager.taskmanager.core.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +14,9 @@ class ApiUsuarioService {
 
     @Autowired
     private lateinit var repository: UsuarioRepository
+
+    @Autowired
+    private lateinit var usuarioMapper: ApiUsuarioMapper
 
     fun add(request: UsuarioRequest): Usuario {
         var newUserAdd = Usuario().apply {
@@ -33,16 +37,7 @@ class ApiUsuarioService {
     fun findById(id: Long): UsuarioResponse {
         val userFound = usuarioById(id)
 
-        //TODO: Adicionar um mapper para retornar um response
-        val userResponse = UsuarioResponse(
-            id = userFound.id.toString(),
-            nomeSobreNome = "${userFound.nome} ${userFound.sobrenome}",
-            email = userFound.email,
-            tipo = userFound.tipo?.name.toString(),
-            ativo = userFound.ativo,
-        )
-
-        return userResponse
+        return usuarioMapper.toResponse(userFound)
     }
 
     fun usuarioById(id: Long): Usuario {
@@ -55,10 +50,7 @@ class ApiUsuarioService {
 
     fun findAll(): List<UsuarioResponse> {
         val users: List<UsuarioResponse> = repository.findAll().map { user ->
-            UsuarioResponse(
-                id = user.id.toString(), nomeSobreNome = "${user.nome} ${user.sobrenome}",
-                email = user.email, tipo = user.tipo?.name.toString(), ativo = user.ativo
-            )
+            usuarioMapper.toResponse(user)
         }
         return users
 

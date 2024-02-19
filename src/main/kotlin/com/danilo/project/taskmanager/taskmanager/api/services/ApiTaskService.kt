@@ -5,6 +5,7 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesTaskR
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.TaskResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiTaskMapper
 import com.danilo.project.taskmanager.taskmanager.core.enums.Status
+import com.danilo.project.taskmanager.taskmanager.core.mock.Mock
 import com.danilo.project.taskmanager.taskmanager.core.models.Task
 import com.danilo.project.taskmanager.taskmanager.core.repositories.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,10 +43,15 @@ class ApiTaskService {
     }
 
     fun findAll(): List<TaskResponse> {
+        val tasksByUser = repository.findByUsuario(Mock.userMocked()).orElseThrow()
+
+        val tasksResponse = tasksByUser.stream().map { task -> taskMapper.toResponse(task) }.toList()
+
         val tasks: List<TaskResponse> = repository.findAll().map { task ->
             taskMapper.toResponse(task)
         }
-        return tasks
+
+        return tasksResponse
 
     }
 

@@ -8,7 +8,7 @@ import java.time.LocalDate
 data class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = 0,
+    var id: Long? = 0,
 
     @Column(nullable = false)
     var nome: String? = null,

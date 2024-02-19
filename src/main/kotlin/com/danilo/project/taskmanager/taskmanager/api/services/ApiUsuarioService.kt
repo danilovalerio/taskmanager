@@ -19,6 +19,7 @@ class ApiUsuarioService {
     private lateinit var usuarioMapper: ApiUsuarioMapper
 
     fun add(request: UsuarioRequest): Usuario {
+        //TODO: usar o toModel do Mapper
         var newUserAdd = Usuario().apply {
             this.nome = request.nome
             this.sobrenome = request.sobrenome

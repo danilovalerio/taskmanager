@@ -1,5 +1,6 @@
 package com.danilo.project.taskmanager.taskmanager.api.mappers
 
+import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import org.springframework.stereotype.Component
@@ -17,5 +18,19 @@ class ApiUsuarioMapper {
         }
 
         return usuarioResponse
+    }
+
+    fun toModel(request: UsuarioRequest): Usuario {
+        var newUserAdd = Usuario().apply {
+            this.nome = request.nome
+            this.sobrenome = request.sobrenome
+            this.email = request.email
+            this.senha = request.senha
+            this.cpfCnpj = request.cpfCnpj
+            this.ativo = request.ativo
+            this.tipo = request.tipo
+        }
+
+        return newUserAdd
     }
 }

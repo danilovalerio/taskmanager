@@ -8,7 +8,7 @@ import jakarta.persistence.*
 data class Task(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = 0,
+    var id: Long? = 0,
 
     @Column(nullable = false, length = 32)
     var title: String? = null,

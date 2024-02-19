@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `taskmanager`.`task` (
   `title` VARCHAR(32) NOT NULL,
   `usuario_id` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `UK_ieybpna9brl1ypirh49b1640i` (`usuario_id` ASC) VISIBLE,
+  INDEX `UK_ieybpna9brl1ypirh49b1640i` (`usuario_id` ASC) VISIBLE,
   CONSTRAINT `FK7er7x6v90hyklkxprpoavav1n`
     FOREIGN KEY (`usuario_id`)
     REFERENCES `taskmanager`.`usuario` (`id`))

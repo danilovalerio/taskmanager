@@ -43,7 +43,9 @@ class ApiTaskService {
     }
 
     fun findAll(): List<TaskResponse> {
-        val tasksByUser = repository.findByUsuario(Mock.userMocked()).orElseThrow()
+        val tasksByUser = repository.findByUsuario(Mock.userMocked()).orElseThrow{
+            (throw RuntimeException("Não foi possível encontrar tasks para esse usuário"))
+        }
 
         val tasksResponse = tasksByUser.stream().map { task -> taskMapper.toResponse(task) }.toList()
 

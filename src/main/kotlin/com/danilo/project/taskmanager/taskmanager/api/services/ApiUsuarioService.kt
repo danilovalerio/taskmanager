@@ -7,6 +7,7 @@ import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiUsuarioMapper
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import com.danilo.project.taskmanager.taskmanager.core.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,13 +19,18 @@ class ApiUsuarioService {
     @Autowired
     private lateinit var usuarioMapper: ApiUsuarioMapper
 
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
     fun add(request: UsuarioRequest): Usuario {
+        var senhaCriptografada = passwordEncoder.encode(request.senha)
+
         //TODO: usar o toModel do Mapper
         var newUserAdd = Usuario().apply {
             this.nome = request.nome
             this.sobrenome = request.sobrenome
             this.email = request.email
-            this.senha = request.senha
+            this.senha = senhaCriptografada
             this.cpfCnpj = request.cpfCnpj
             this.ativo = request.ativo
             this.tipo = request.tipo

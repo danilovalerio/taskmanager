@@ -15,8 +15,16 @@ class Config {
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests {auth ->
             auth.anyRequest().permitAll()
-
         }
+
+
+        /**
+         * Configuração de API
+         */
+        httpSecurity.csrf()
+            .ignoringRequestMatchers("/api/**")
+            .ignoringRequestMatchers("/auth/**")
+
         return httpSecurity.build()
     }
 }

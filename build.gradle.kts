@@ -32,6 +32,9 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")
 
+	//Spring Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+
 	//validação dos campos
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 

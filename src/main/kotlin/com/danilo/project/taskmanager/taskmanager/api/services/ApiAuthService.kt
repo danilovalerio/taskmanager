@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service
 class ApiAuthService {
 
     @Autowired
+    private lateinit var tokenService: TokenService
+
+    @Autowired
     private lateinit var userDetailsService: UserDetailsService
 
     @Autowired
     private lateinit var authenticationManager: AuthenticationManager
-
-    @Autowired
-    private lateinit var tokenService: TokenService
 
     @Autowired
     private lateinit var tokenBlackListService: TokenBlackListService

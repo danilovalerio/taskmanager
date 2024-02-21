@@ -38,6 +38,9 @@ dependencies {
 	//validação dos campos
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	//Json Web Token
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

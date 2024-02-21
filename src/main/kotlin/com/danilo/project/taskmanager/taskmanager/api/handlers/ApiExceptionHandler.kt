@@ -1,6 +1,7 @@
 package com.danilo.project.taskmanager.taskmanager.api.handlers
 
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.ErroResponse
+import com.danilo.project.taskmanager.taskmanager.api.utils.Format
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.ValidacaoException
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import jakarta.persistence.EntityNotFoundException
@@ -37,18 +38,15 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
         exception: EntityNotFoundException,
         request: HttpServletRequest
     ): ResponseEntity<Any>? {
-        var status = HttpStatus.NOT_FOUND
+        val status = HttpStatus.NOT_FOUND
 
-        val df = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-
-        var errorResponse = ErroResponse(
+        val errorResponse = ErroResponse(
             status = status.value(),
-            timestamp = LocalDateTime.now().format(df),
+            timestamp = Format.dateFormatError(LocalDateTime.now()),
             mensagem = exception.localizedMessage,
             path = request.requestURI
         )
 
         return ResponseEntity(errorResponse, status)
     }
-
 }

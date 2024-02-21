@@ -41,6 +41,14 @@ dependencies {
 	//Json Web Token
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+	/**
+	 * Fix Erro
+	 * path [] threw exception
+	 * [Handler dispatch failed: java.lang.NoClassDefFoundError: javax/xml/bind/DatatypeConverter]
+	 * with root cause
+	 */
+	implementation("javax.xml.bind:jaxb-api:2.3.1")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

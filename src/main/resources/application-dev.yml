@@ -12,3 +12,10 @@ spring:
       #ddl-auto: update
       #ddl-auto: validate
     show-sql: true
+
+#Tokens
+token:
+  accessKey: chaveAccessSign
+  secondsExpiration: 840
+  refreshKey: chaveRefreshSign
+  refreshSecondsExpiration: 60

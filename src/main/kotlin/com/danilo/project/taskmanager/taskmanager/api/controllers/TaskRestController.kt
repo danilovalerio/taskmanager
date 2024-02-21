@@ -29,7 +29,7 @@ class TaskRestController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    fun add(@RequestBody @Validated request: TaskRequest): Task {
+    fun add(@RequestBody @Validated request: TaskRequest): TaskResponse {
         return service.add(request)
     }
 

@@ -35,4 +35,8 @@ class UsuarioAutenticado(user: Usuario) : UserDetails {
     override fun isEnabled(): Boolean {
         return true
     }
+
+    fun getUsuario(): Usuario {
+        return user
+    }
 }

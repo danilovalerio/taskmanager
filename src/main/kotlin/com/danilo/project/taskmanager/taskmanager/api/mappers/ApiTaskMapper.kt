@@ -3,9 +3,9 @@ package com.danilo.project.taskmanager.taskmanager.api.mappers
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.TaskRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesTaskRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.TaskResponse
+import com.danilo.project.taskmanager.taskmanager.api.utils.SecurityUtils
 import com.danilo.project.taskmanager.taskmanager.core.enums.Priority
 import com.danilo.project.taskmanager.taskmanager.core.enums.Status
-import com.danilo.project.taskmanager.taskmanager.core.mock.Mock
 import com.danilo.project.taskmanager.taskmanager.core.models.Task
 import org.springframework.stereotype.Component
 
@@ -21,19 +21,20 @@ class ApiTaskMapper {
             this.comment = model.comment
             this.status = model.status
             this.ativa = model.ativa
-            this.usuario = model.usuario
+            //this.usuario = model.usuario
         }
 
         return taskResponse
     }
 
     fun toModel(request: TaskRequest): Task {
+
         val taskModel = Task().apply {
             this.title = request.title
             this.description = request.description
             this.priority = intToPriority(request.priority ?: 0)
             this.comment = request.comment
-            this.usuario = Mock.userMocked()
+            this.usuario = SecurityUtils().getUsuarioAutenticado()
         }
 
         return taskModel
@@ -48,7 +49,7 @@ class ApiTaskMapper {
             this.priority = intToPriority(request.priority ?: 0)
             this.status = intToStatus(request.status ?: 0)
             this.comment = request.comment
-            this.usuario = Mock.userMocked()
+            this.usuario = SecurityUtils().getUsuarioAutenticado()
         }
 
         return taskModel

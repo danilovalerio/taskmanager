@@ -4,9 +4,9 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.TaskRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesTaskRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.TaskResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiTaskMapper
+import com.danilo.project.taskmanager.taskmanager.api.utils.SecurityUtils
 import com.danilo.project.taskmanager.taskmanager.core.enums.Status
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.EntidadeNaoEncontradaException
-import com.danilo.project.taskmanager.taskmanager.core.mock.Mock
 import com.danilo.project.taskmanager.taskmanager.core.models.Task
 import com.danilo.project.taskmanager.taskmanager.core.repositories.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,12 +21,13 @@ class ApiTaskService {
     @Autowired
     private lateinit var taskMapper: ApiTaskMapper
 
-    fun add(request: TaskRequest): Task {
+    fun add(request: TaskRequest): TaskResponse {
+
         val newTaskAdd = taskMapper.toModel(request)
 
         val newTaskAdded = repository.save(newTaskAdd)
 
-        return newTaskAdded
+        return taskMapper.toResponse(newTaskAdded)
     }
 
     fun findById(id: Long): TaskResponse {
@@ -44,7 +45,7 @@ class ApiTaskService {
     }
 
     fun findAll(): List<TaskResponse> {
-        val tasksByUser = repository.findByUsuario(Mock.userMocked()).orElseThrow{
+        val tasksByUser = repository.findByUsuario(SecurityUtils().getUsuarioAutenticado()).orElseThrow{
             (throw RuntimeException("Não foi possível encontrar tasks para esse usuário"))
         }
 

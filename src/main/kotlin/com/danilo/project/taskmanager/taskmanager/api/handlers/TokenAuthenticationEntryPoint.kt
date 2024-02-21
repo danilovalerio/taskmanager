@@ -1,7 +1,7 @@
 package com.danilo.project.taskmanager.taskmanager.api.handlers
 
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.ErroResponse
-import com.danilo.project.taskmanager.taskmanager.api.utils.Format
+import com.danilo.project.taskmanager.taskmanager.api.utils.FormatUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -32,7 +32,7 @@ class TokenAuthenticationEntryPoint : AuthenticationEntryPoint {
 
         var errorResponse = ErroResponse(
             status = status.value(),
-            timestamp = Format.dateFormatError(LocalDateTime.now()),
+            timestamp = FormatUtils.dateFormatError(LocalDateTime.now()),
             mensagem = authException!!.localizedMessage,
             path = request!!.requestURI
         )

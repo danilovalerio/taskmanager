@@ -1,7 +1,7 @@
 package com.danilo.project.taskmanager.taskmanager.api.handlers
 
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.ErroResponse
-import com.danilo.project.taskmanager.taskmanager.api.utils.Format
+import com.danilo.project.taskmanager.taskmanager.api.utils.FormatUtils
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.ValidacaoException
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import jakarta.persistence.EntityNotFoundException
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @RestControllerAdvice(annotations = [RestController::class])
 class ApiExceptionHandler : ResponseEntityExceptionHandler() {
@@ -42,7 +41,7 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
 
         val errorResponse = ErroResponse(
             status = status.value(),
-            timestamp = Format.dateFormatError(LocalDateTime.now()),
+            timestamp = FormatUtils.dateFormatError(LocalDateTime.now()),
             mensagem = exception.localizedMessage,
             path = request.requestURI
         )

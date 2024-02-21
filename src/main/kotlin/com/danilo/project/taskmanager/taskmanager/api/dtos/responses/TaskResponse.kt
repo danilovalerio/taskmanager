@@ -14,6 +14,5 @@ data class TaskResponse (
     var priority: Priority? = Priority.LOW,
     var comment: String? = null,
     var status: Status? = Status.TODO,
-    var ativa: Boolean? = true,
-    var usuario: Usuario? = null
+    var ativa: Boolean? = true
 )

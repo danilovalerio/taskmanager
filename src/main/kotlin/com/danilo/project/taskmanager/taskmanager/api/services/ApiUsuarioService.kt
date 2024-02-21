@@ -4,6 +4,7 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuar
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiUsuarioMapper
+import com.danilo.project.taskmanager.taskmanager.core.exceptions.EntidadeNaoEncontradaException
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import com.danilo.project.taskmanager.taskmanager.core.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,7 +50,7 @@ class ApiUsuarioService {
 
     fun usuarioById(id: Long): Usuario {
         val userFound = repository.findById(id).orElseThrow {
-            (throw RuntimeException("Não foi possível encontrar esse id $id de usuário"))
+            (throw EntidadeNaoEncontradaException("Não foi possível encontrar esse id $id de usuário"))
         }
 
         return userFound

@@ -5,6 +5,7 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesTaskR
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.TaskResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiTaskMapper
 import com.danilo.project.taskmanager.taskmanager.core.enums.Status
+import com.danilo.project.taskmanager.taskmanager.core.exceptions.EntidadeNaoEncontradaException
 import com.danilo.project.taskmanager.taskmanager.core.mock.Mock
 import com.danilo.project.taskmanager.taskmanager.core.models.Task
 import com.danilo.project.taskmanager.taskmanager.core.repositories.TaskRepository
@@ -36,7 +37,7 @@ class ApiTaskService {
 
     fun taskById(id: Long): Task {
         val taskFound = repository.findById(id).orElseThrow {
-            (throw RuntimeException("Não foi possível encontrar esse id $id de task."))
+            (throw EntidadeNaoEncontradaException("Não foi possível encontrar esse id $id de task."))
         }
 
         return taskFound

@@ -1,6 +1,8 @@
 package com.danilo.project.taskmanager.taskmanager.core.exceptions
 
-open class CustomException(msg: String) : RuntimeException(msg) {
+import org.springframework.validation.FieldError
+
+open class CustomException(msg: String, field: FieldError) : ValidacaoException(msg, field) {
 
 
 }

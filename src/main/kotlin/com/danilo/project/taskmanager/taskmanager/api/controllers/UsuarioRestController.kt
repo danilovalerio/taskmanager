@@ -29,7 +29,7 @@ class UsuarioRestController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    fun add(@RequestBody @Validated request: UsuarioRequest): Usuario {
+    fun add(@RequestBody @Validated request: UsuarioRequest): UsuarioResponse {
         return service.add(request)
     }
 

@@ -6,6 +6,7 @@ import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
+import org.springframework.validation.FieldError
 
 @Component
 class SecurityUtils {
@@ -20,7 +21,10 @@ class SecurityUtils {
             val usuario = tipoUsuarioLogado.getUsuario()
             return usuario
         } catch (e: Exception) {
-            throw CustomException(e.localizedMessage)
+            throw CustomException(
+                e.localizedMessage,
+                FieldError("", Usuario::class.simpleName.toString(), e.message.toString())
+            )
         }
 
     }

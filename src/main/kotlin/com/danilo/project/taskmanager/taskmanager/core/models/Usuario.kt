@@ -16,7 +16,7 @@ data class Usuario(
     @Column(nullable = false)
     var sobrenome: String? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var email: String? = null,
 
     @Column(nullable = false)

@@ -2,6 +2,7 @@ package com.danilo.project.taskmanager.taskmanager.api.handlers
 
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.ErroResponse
 import com.danilo.project.taskmanager.taskmanager.api.utils.FormatUtils
+import com.danilo.project.taskmanager.taskmanager.core.exceptions.CustomException
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.ValidacaoException
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import jakarta.persistence.EntityNotFoundException
@@ -18,6 +19,20 @@ import java.time.LocalDateTime
 class ApiExceptionHandler : ResponseEntityExceptionHandler() {
 
     private var camelCaseToSnakeCase = PropertyNamingStrategies.SnakeCaseStrategy()
+
+    @ExceptionHandler(CustomException::class)
+    fun handleCustomException(exception: CustomException, request: HttpServletRequest): ResponseEntity<Any>? {
+        val status = HttpStatus.BAD_REQUEST
+
+        val errorResponse = ErroResponse(
+            status = status.value(),
+            timestamp = FormatUtils.dateFormatError(LocalDateTime.now()),
+            mensagem = "${exception.localizedMessage} /n ${exception.getFieldError().defaultMessage?.take(255) ?: ""}",
+            path = request.requestURI
+        )
+
+        return ResponseEntity(errorResponse, status)
+    }
 
     @ExceptionHandler(ValidacaoException::class)
     fun handleValidacaoException(exception: ValidacaoException): ResponseEntity<Any>? {

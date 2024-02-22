@@ -4,12 +4,14 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuar
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiUsuarioMapper
+import com.danilo.project.taskmanager.taskmanager.core.exceptions.CustomException
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.EntidadeNaoEncontradaException
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
 import com.danilo.project.taskmanager.taskmanager.core.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.validation.FieldError
 
 @Service
 class ApiUsuarioService {
@@ -23,23 +25,20 @@ class ApiUsuarioService {
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
-    fun add(request: UsuarioRequest): Usuario {
+    fun add(request: UsuarioRequest): UsuarioResponse {
         var senhaCriptografada = passwordEncoder.encode(request.senha)
 
         //TODO: usar o toModel do Mapper
-        var newUserAdd = Usuario().apply {
-            this.nome = request.nome
-            this.sobrenome = request.sobrenome
-            this.email = request.email
-            this.senha = senhaCriptografada
-            this.cpfCnpj = request.cpfCnpj
-            this.ativo = request.ativo
-            this.tipo = request.tipo
+        var newUserAdd = usuarioMapper.toModel(request)
+        try {
+            val userAdded = repository.save(newUserAdd)
+            return usuarioMapper.toResponse(userAdded)
+        } catch (e: Exception) {
+            throw (CustomException(
+                "Não foi possível inserir usuário",
+                FieldError("", Usuario::class.simpleName.toString(), e.message.toString())
+            ))
         }
-
-        val userAdded = repository.save(newUserAdd)
-
-        return userAdded
     }
 
     fun findById(id: Long): UsuarioResponse {
@@ -99,9 +98,11 @@ class ApiUsuarioService {
         return "Usuário excluído com sucesso."
     }
 
-    private fun messageSituationActivate(usuarioResponse: UsuarioResponse): String{
-       val msg = "O usuário ${usuarioResponse.nomeSobreNome} está ${if (usuarioResponse.ativo == true) "Ativo" else
-           "Desativado"}"
+    private fun messageSituationActivate(usuarioResponse: UsuarioResponse): String {
+        val msg = "O usuário ${usuarioResponse.nomeSobreNome} está ${
+            if (usuarioResponse.ativo == true) "Ativo" else
+                "Desativado"
+        }"
 
         return msg
     }

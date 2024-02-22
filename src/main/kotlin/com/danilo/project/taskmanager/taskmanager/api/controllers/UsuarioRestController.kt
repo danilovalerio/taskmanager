@@ -4,7 +4,7 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuar
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.api.services.ApiUsuarioService
-import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
+import com.danilo.project.taskmanager.taskmanager.core.permissions.TaskManagerPermissions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
@@ -18,6 +18,7 @@ class UsuarioRestController {
     private lateinit var service: ApiUsuarioService
 
     @GetMapping
+    @TaskManagerPermissions.isAdministrador
     fun listUsers(): List<UsuarioResponse>{
         return service.findAll()
     }
@@ -40,6 +41,7 @@ class UsuarioRestController {
         return service.update(id, request)
     }
 
+    @TaskManagerPermissions.isAdministrador
     @PutMapping("/{id}/ativar")
     fun activate(
         @PathVariable id: Long): String {

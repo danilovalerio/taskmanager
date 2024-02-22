@@ -4,6 +4,8 @@ import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UpdatesUsuar
 import com.danilo.project.taskmanager.taskmanager.api.dtos.requests.UsuarioRequest
 import com.danilo.project.taskmanager.taskmanager.api.dtos.responses.UsuarioResponse
 import com.danilo.project.taskmanager.taskmanager.api.mappers.ApiUsuarioMapper
+import com.danilo.project.taskmanager.taskmanager.api.utils.SecurityUtils
+import com.danilo.project.taskmanager.taskmanager.core.enums.TipoUsuario
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.CustomException
 import com.danilo.project.taskmanager.taskmanager.core.exceptions.EntidadeNaoEncontradaException
 import com.danilo.project.taskmanager.taskmanager.core.models.Usuario
@@ -28,8 +30,9 @@ class ApiUsuarioService {
     fun add(request: UsuarioRequest): UsuarioResponse {
         var senhaCriptografada = passwordEncoder.encode(request.senha)
 
-        //TODO: usar o toModel do Mapper
         var newUserAdd = usuarioMapper.toModel(request)
+        newUserAdd.senha = senhaCriptografada
+
         try {
             val userAdded = repository.save(newUserAdd)
             return usuarioMapper.toResponse(userAdded)
@@ -48,11 +51,21 @@ class ApiUsuarioService {
     }
 
     fun usuarioById(id: Long): Usuario {
-        val userFound = repository.findById(id).orElseThrow {
+        val userLogado = SecurityUtils().getUsuarioAutenticado()
+
+        if (userLogado.tipo?.name == TipoUsuario.ADMINISTRADOR.name) {
+            return findUsuarioById(id)
+        } else if (userLogado.id == id) {
+            return findUsuarioById(id)
+        } else {
+            throw EntidadeNaoEncontradaException("Item não encontrado, entre em contato com o administrador")
+        }
+    }
+
+    private fun findUsuarioById(id: Long): Usuario {
+        return repository.findById(id).orElseThrow {
             (throw EntidadeNaoEncontradaException("Não foi possível encontrar esse id $id de usuário"))
         }
-
-        return userFound
     }
 
     fun findAll(): List<UsuarioResponse> {
@@ -92,10 +105,14 @@ class ApiUsuarioService {
 
     fun deleteByInative(id: Long): String {
         var userFound = usuarioById(id)
+
+        if (userFound.ativo == false) {
+            return "Exclusão já realizada com sucesso."
+        }
         userFound.ativo = false
         repository.save(userFound)
 
-        return "Usuário excluído com sucesso."
+        return "Exclusão realizada com sucesso."
     }
 
     private fun messageSituationActivate(usuarioResponse: UsuarioResponse): String {

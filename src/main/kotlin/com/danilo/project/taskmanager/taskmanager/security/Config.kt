@@ -59,6 +59,8 @@ class Config {
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests {auth ->
             auth.requestMatchers(AntPathRequestMatcher("/api/auth/**")).permitAll()
+            auth.requestMatchers(AntPathRequestMatcher("/error")).permitAll()
+            auth.requestMatchers(AntPathRequestMatcher("/api/usuarios", "POST")).permitAll()
             auth.requestMatchers(AntPathRequestMatcher("/api/**")).hasAnyAuthority(
                 TipoUsuario.ADMINISTRADOR.name,
                 TipoUsuario.USUARIO.name
